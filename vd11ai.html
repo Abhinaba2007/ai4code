@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details | AI Class 11</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+    <style>
+        :root {
+            --primary-color: #65e8ff;
+            --secondary-color: #4ae4fc;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .course-header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .course-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        
+        .course-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 15px auto;
+        }
+        
+        .course-price-tag {
+            background: white;
+            color: var(--secondary-color);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-top: 15px;
+        }
+        
+        .course-details-container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .course-main {
+            flex: 2;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .course-sidebar {
+            flex: 1;
+        }
+        
+        .course-card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        h2, h3 {
+            color: var(--secondary-color);
+        }
+        
+        .btn-enroll {
+            display: block;
+            width: 100%;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-enroll:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(252, 74, 105, 0.3);
+        }
+        
+        .module {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        .module:last-child {
+            border-bottom: none;
+        }
+        
+        .lesson-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .lesson-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .lesson-list li i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-item i {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .stars {
+            color: #ffc107;
+            margin-right: 10px;
+        }
+        
+        .review {
+            margin-bottom: 20px;
+        }
+        
+        .review-author {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .review-date {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        /* Purchase Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 15px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #333;
+        }
+        
+        .pricing-options {
+            margin: 20px 0;
+        }
+        
+        .pricing-option {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .pricing-option:hover {
+            border-color: var(--secondary-color);
+            background-color: #fff9fa;
+        }
+        
+        .pricing-option.selected {
+            border: 2px solid var(--secondary-color);
+            background-color: #fff0f2;
+        }
+        
+        .payment-methods {
+            margin: 20px 0;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .payment-method.selected {
+            border-color: var(--secondary-color);
+            background-color: #fff0f2;
+        }
+        
+        .payment-method img {
+            width: 50px;
+            margin-right: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .btn-pay {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn-pay:hover {
+            opacity: 0.9;
+        }
+        
+        .secure-checkout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        
+        .secure-checkout i {
+            color: #28a745;
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .course-details-container {
+                flex-direction: column;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 90%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="course-header">
+            <h1>Artificial Intelligence - Class 11</h1>
+            <p>Comprehensive AI course covering advanced concepts, Python programming, and real-world applications designed specifically for CBSE Class 11 students.</p>
+            <div class="course-price-tag">₹4,999/year</div>
+        </div>
+        
+        <div class="course-details-container">
+            <div class="course-main">
+                <h2>Course Description</h2>
+                <p>This advanced Artificial Intelligence course for Class 11 students builds on fundamental concepts through in-depth exploration of AI technologies, Python programming, machine learning algorithms, and ethical considerations. Aligned with the CBSE curriculum, the course prepares students for both academic excellence and practical AI applications.</p>
+                
+                <h2>What You'll Learn</h2>
+                <div class="module">
+                    <h3>Module 1: Advanced AI Concepts</h3>
+                    <ul class="lesson-list">
+                        <li><i class="fas fa-check-circle"></i> Deep dive into AI fundamentals</li>
+                        <li><i class="fas fa-check-circle"></i> AI in modern industries</li>
+                        <li><i class="fas fa-check-circle"></i> Cognitive computing and AI</li>
+                        <li><i class="fas fa-check-circle"></i> AI ethics and societal impact</li>
+                    </ul>
+                </div>
+                
+                <div class="module">
+                    <h3>Module 2: Python for AI</h3>
+                    <ul class="lesson-list">
+                        <li><i class="fas fa-check-circle"></i> Advanced Python programming</li>
+                        <li><i class="fas fa-check-circle"></i> Data structures and algorithms</li>
+                        <li><i class="fas fa-check-circle"></i> Object-oriented programming</li>
+                        <li><i class="fas fa-check-circle"></i> File handling and databases</li>
+                    </ul>
+                </div>
+                
+                <div class="module">
+                    <h3>Module 3: Machine Learning</h3>
+                    <ul class="lesson-list">
+                        <li><i class="fas fa-check-circle"></i> Supervised vs unsupervised learning</li>
+                        <li><i class="fas fa-check-circle"></i> Regression and classification</li>
+                        <li><i class="fas fa-check-circle"></i> Neural networks introduction</li>
+                        <li><i class="fas fa-check-circle"></i> Model evaluation techniques</li>
+                    </ul>
+                </div>
+                
+                <div class="module">
+                    <h3>Module 4: AI Applications</h3>
+                    <ul class="lesson-list">
+                        <li><i class="fas fa-check-circle"></i> Natural Language Processing</li>
+                        <li><i class="fas fa-check-circle"></i> Computer vision with OpenCV</li>
+                        <li><i class="fas fa-check-circle"></i> Predictive analytics</li>
+                        <li><i class="fas fa-check-circle"></i> AI project development</li>
+                    </ul>
+                </div>
+                
+                <h2>Course Features</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-video"></i>
+                        <div>
+                            <h4>150+ Video Lectures</h4>
+                            <p>In-depth, high-quality video content</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-book"></i>
+                        <div>
+                            <h4>Comprehensive Resources</h4>
+                            <p>PDFs, code samples, and research papers</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-tasks"></i>
+                        <div>
+                            <h4>80+ Practice Exercises</h4>
+                            <p>Challenging coding problems</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-certificate"></i>
+                        <div>
+                            <h4>Advanced Certification</h4>
+                            <p>Recognized by educational institutions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="course-sidebar">
+                <div class="course-card">
+                    <h3>Course Details</h3>
+                    <p><i class="far fa-clock"></i> <strong>Duration:</strong> 80+ Hours</p>
+                    <p><i class="fas fa-language"></i> <strong>Language:</strong> English/Hindi</p>
+                    <p><i class="fas fa-layer-group"></i> <strong>Level:</strong> Intermediate</p>
+                    <p><i class="fas fa-calendar-alt"></i> <strong>Start Date:</strong> Anytime (Self-paced)</p>
+                    <p><i class="fas fa-mobile-alt"></i> <strong>Access:</strong> Mobile & Desktop</p>
+                    
+                    <button id="enrollBtn" class="btn-enroll">Enroll Now</button>
+                    <button id="demoviewBtn" onclick="window.location.href='learnif11ai.html'" class="btn-enroll">Demo View</button>
+                    
+                    <div class="secure-checkout">
+                        <i class="fas fa-lock"></i>
+                        <span>Secure Payment</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>Student Reviews</h3>
+                    <div class="rating">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span>4.9 (956 reviews)</span>
+                    </div>
+                    
+                    <div class="review">
+                        <img src="student1.jpg" alt="Student" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="review-author">Rahul Sharma</div>
+                        <div class="review-date">3 weeks ago</div>
+                        <p>"The machine learning modules were exceptional. Perfectly paced for Class 11 students."</p>
+                    </div>
+                    
+                    <div class="review">
+                        <img src="student2.jpg" alt="Student" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="review-author">Priya Patel</div>
+                        <div class="review-date">1 month ago</div>
+                        <p>"The Python content helped me score well in my school exams and build my own AI models."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div id="purchaseModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Complete Your Enrollment</h2>
+            <p>Join thousands of Class 11 students mastering Artificial Intelligence with this advanced course.</p>
+            
+            <div class="pricing-options">
+                <h3>Select Plan</h3>
+                <div class="pricing-option selected" data-price="4999">
+                    <h4>1 Year Access</h4>
+                    <p>Full course access for 12 months</p>
+                    <div class="price">₹4,999</div>
+                </div>
+                <div class="pricing-option" data-price="7999">
+                    <h4>Lifetime Access</h4>
+                    <p>Unlimited access to all course materials</p>
+                    <div class="price">₹7,999 <span class="discount">(Save 35%)</span></div>
+                </div>
+            </div>
+            
+            <div class="payment-methods">
+                <h3>Payment Method</h3>
+                <div class="payment-method selected">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa">
+                    <span>Credit/Debit Card</span>
+                </div>
+                <div class="payment-method">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg.png" alt="PayPal">
+                    <span>PayPal</span>
+                </div>
+                <div class="payment-method">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/PhonePe_Logo.svg/2560px-PhonePe_Logo.svg.png" alt="PhonePe">
+                    <span>UPI (PhonePe/GPay)</span>
+                </div>
+                <div class="payment-method">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/NetBanking.svg/1200px-NetBanking.svg.png" alt="Net Banking">
+                    <span>Net Banking</span>
+                </div>
+            </div>
+            
+            <div class="card-details">
+                <h3>Card Details</h3>
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+                </div>
+                <div class="form-group">
+                    <label for="cardName">Name on Card</label>
+                    <input type="text" id="cardName" placeholder="John Doe">
+                </div>
+                <div style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="123">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="total-amount">
+                <h3>Total Amount: <span id="totalPrice">₹4,999</span></h3>
+                <p>Inclusive of all taxes</p>
+            </div>
+            
+            <button class="btn-pay">Proceed to Payment</button>
+            
+            <div class="secure-checkout">
+                <i class="fas fa-lock"></i>
+                <span>Secure SSL Encryption</span>
+            </div>
+            
+            <div class="refund-policy">
+                <p><small>30-day money-back guarantee. If you're not satisfied, we'll refund your payment.</small></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in (you would replace this with your actual authentication check)
+        function isUserLoggedIn() {
+            // This is a placeholder - in a real app you would check cookies, localStorage, or make an API call
+            return localStorage.getItem('isLoggedIn') === 'true';
+        }
+
+        // Redirect to login page if not logged in
+        function redirectToLogin() {
+            // Store the current page to return after login
+            localStorage.setItem('returnUrl', window.location.href);
+            window.location.href = '/login.html'; // Update this with your login page URL
+        }
+
+        // Modal functionality
+        const modal = document.getElementById("purchaseModal");
+        const btn = document.getElementById("enrollBtn");
+        const span = document.getElementsByClassName("close")[0];
+        
+        // Open modal when enroll button is clicked
+        btn.onclick = function() {
+            if (!isUserLoggedIn()) {
+                redirectToLogin();
+                return;
+            }
+            modal.style.display = "block";
+        }
+        
+        // Close modal when X is clicked
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        
+        // Pricing option selection
+        const pricingOptions = document.querySelectorAll('.pricing-option');
+        pricingOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                pricingOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                document.getElementById('totalPrice').textContent = `₹${this.dataset.price}`;
+            });
+        });
+        
+        // Payment method selection
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', function() {
+                paymentMethods.forEach(m => m.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        
+        // Card number formatting
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formatted = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) formatted += ' ';
+                formatted += value[i];
+            }
+            this.value = formatted.substring(0, 19);
+        });
+        
+        // Expiry date formatting
+        document.getElementById('expiryDate').addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, '');
+            if (value.length > 2) {
+                this.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+        });
+
+        // Validate card details
+        function validateCardDetails() {
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s+/g, '');
+            const cardName = document.getElementById('cardName').value.trim();
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+            
+            // Clear previous errors
+            clearErrors();
+            
+            let isValid = true;
+            
+            // Validate card number (16 digits, Luhn algorithm)
+            if (!cardNumber || cardNumber.length !== 16 || !luhnCheck(cardNumber)) {
+                showError('Please enter a valid 16-digit card number', 'cardNumber');
+                isValid = false;
+            }
+            
+            // Validate card name (at least 2 words with letters only)
+            if (!cardName || !/^[a-zA-Z ]{2,}$/.test(cardName) || cardName.split(' ').length < 2) {
+                showError('Please enter the full name as shown on card', 'cardName');
+                isValid = false;
+            }
+            
+            // Validate expiry date (MM/YY format and not expired)
+            if (!expiryDate || !/^\d{2}\/\d{2}$/.test(expiryDate)) {
+                showError('Please enter valid expiry date (MM/YY)', 'expiryDate');
+                isValid = false;
+            } else {
+                const [month, year] = expiryDate.split('/');
+                const currentYear = new Date().getFullYear() % 100;
+                const currentMonth = new Date().getMonth() + 1;
+                
+                if (parseInt(month) < 1 || parseInt(month) > 12) {
+                    showError('Invalid month (01-12)', 'expiryDate');
+                    isValid = false;
+                } else if (parseInt(year) < currentYear || 
+                          (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
+                    showError('Card has expired', 'expiryDate');
+                    isValid = false;
+                }
+            }
+            
+            // Validate CVV (3 or 4 digits)
+            if (!cvv || !/^\d{3,4}$/.test(cvv)) {
+                showError('Please enter valid CVV (3 or 4 digits)', 'cvv');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        // Luhn algorithm check for valid card number
+        function luhnCheck(cardNumber) {
+            let sum = 0;
+            for (let i = 0; i < cardNumber.length; i++) {
+                let digit = parseInt(cardNumber[i]);
+                if ((cardNumber.length - i) % 2 === 0) {
+                    digit *= 2;
+                    if (digit > 9) digit -= 9;
+                }
+                sum += digit;
+            }
+            return sum % 10 === 0;
+        }
+
+        // Show error message for a field
+        function showError(message, fieldId) {
+            const field = document.getElementById(fieldId);
+            const formGroup = field.closest('.form-group') || field.parentElement;
+            
+            // Add error message
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-message';
+            errorElement.textContent = message;
+            
+            formGroup.appendChild(errorElement);
+            field.classList.add('error');
+        }
+
+        // Clear all error messages
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => el.remove());
+            document.querySelectorAll('.form-group input').forEach(input => {
+                input.classList.remove('error');
+            });
+        }
+
+        // Simulate Visa 3D Secure OTP page
+        function showVisaOTPPage() {
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.innerHTML = `
+                <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto;">
+                    <div style="background: #00579f; padding: 15px; text-align: center;">
+                        <img src="https://www.visa.co.in/dam/VCOM/regional/ap/india/global-elements/images/visa-logo-800x450.png" 
+                             style="height: 30px;" alt="Visa">
+                    </div>
+                    
+                    <div style="padding: 20px; border: 1px solid #ddd; border-top: none;">
+                        <h3 style="color: #00579f; text-align: center;">Secure Verification</h3>
+                        <p style="text-align: center;">For your security, please complete the verification</p>
+                        
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                            <p style="margin: 0;">A One-Time Password (OTP) has been sent to your mobile number ending with <strong>${Math.floor(Math.random() * 9000 + 1000)}</strong></p>
+                        </div>
+                        
+                        <div style="margin: 25px 0;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: bold;">Enter OTP</label>
+                            <input type="text" id="visaOTP" 
+                                   style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px;" 
+                                   placeholder="6-digit OTP" maxlength="6">
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-top: 25px;">
+                            <button id="resendOTP" style="
+                                background: none;
+                                border: 1px solid #00579f;
+                                color: #00579f;
+                                padding: 10px 15px;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            ">Resend OTP</button>
+                            
+                            <button id="submitOTP" style="
+                                background: #00579f;
+                                color: white;
+                                border: none;
+                                padding: 10px 25px;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            ">Submit</button>
+                        </div>
+                        
+                        <div style="margin-top: 30px; font-size: 12px; color: #666; text-align: center;">
+                            <p>Visa Secure protects your payment details with an additional layer of security</p>
+                            <img src="https://www.visa.co.in/dam/VCOM/regional/ap/india/global-elements/images/verified-by-visa-173x80.png" 
+                                 style="height: 30px; margin-top: 10px;">
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Handle OTP submission
+            document.getElementById('submitOTP').addEventListener('click', function() {
+                const otp = document.getElementById('visaOTP').value;
+                if (!otp || otp.length !== 6) {
+                    alert('Please enter a valid 6-digit OTP');
+                    return;
+                }
+                completePayment();
+            });
+
+            // Handle OTP resend
+            document.getElementById('resendOTP').addEventListener('click', function() {
+                alert('New OTP has been sent to your registered mobile number');
+            });
+        }
+
+        // Complete payment after verification
+        function completePayment() {
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.innerHTML = `
+                <div style="text-align: center; padding: 30px;">
+                    <div class="spinner"></div>
+                    <h3>Processing Payment...</h3>
+                    <p>Please wait while we complete your transaction</p>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                modalContent.innerHTML = `
+                    <div style="text-align: center; padding: 30px;">
+                        <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 60px;"></i>
+                        <h3>Payment Successful!</h3>
+                        <p>Your transaction ID: <strong>TXN${Math.floor(100000 + Math.random() * 900000)}</strong></p>
+                        <p>₹${document.getElementById('totalPrice').textContent.replace('₹','')} has been deducted from your account</p>
+                        <p>We've sent a confirmation to your email</p>
+                        <button onclick="modal.style.display='none'" style="
+                            background: linear-gradient(to right, #65e8ff, #4ae4fc);
+                            color: white;
+                            border: none;
+                            padding: 12px 20px;
+                            border-radius: 5px;
+                            font-size: 16px;
+                            font-weight: bold;
+                            cursor: pointer;
+                            margin-top: 20px;
+                        ">Done</button>
+                    </div>
+                `;
+            }, 2000);
+        }
+        
+        // Payment form submission
+        document.querySelector('.btn-pay').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Check if user is logged in (in case session expired)
+            if (!isUserLoggedIn()) {
+                redirectToLogin();
+                return;
+            }
+            
+            // Get selected payment method
+            const selectedPayment = document.querySelector('.payment-method.selected');
+            if (!selectedPayment) {
+                alert('Please select a payment method');
+                return;
+            }
+            
+            // Get selected plan
+            const selectedPlan = document.querySelector('.pricing-option.selected');
+            if (!selectedPlan) {
+                alert('Please select a plan');
+                return;
+            }
+            
+            // Card payment flow
+            if (selectedPayment.querySelector('img[alt="Visa"]')) {
+                // Validate all card details first
+                if (!validateCardDetails()) {
+                    return;
+                }
+                // Show Visa 3D Secure OTP page
+                showVisaOTPPage();
+            } 
+            // UPI payment flow
+            else if (selectedPayment.querySelector('img[alt="PhonePe"]')) {
+                const modalContent = document.querySelector('.modal-content');
+                modalContent.innerHTML = `
+                    <div style="text-align: center; padding: 30px;">
+                        <i class="fas fa-external-link-alt" style="font-size: 50px; color: #4ae4fc;"></i>
+                        <h3>Redirecting to UPI App</h3>
+                        <p>Please complete the payment in your UPI app</p>
+                        <div class="spinner"></div>
+                        <p>Returning to this page after payment...</p>
+                    </div>
+                `;
+                
+                setTimeout(() => {
+                    completePayment();
+                }, 3000);
+            }
+            // Net Banking flow
+            else if (selectedPayment.querySelector('img[alt="NetBanking"]')) {
+                const modalContent = document.querySelector('.modal-content');
+                modalContent.innerHTML = `
+                    <div style="text-align: center; padding: 30px;">
+                        <i class="fas fa-university" style="font-size: 50px; color: #4ae4fc;"></i>
+                        <h3>Redirecting to Bank</h3>
+                        <p>You will be redirected to your bank's website to complete payment</p>
+                        <div class="spinner"></div>
+                        <p>Returning to this page after payment...</p>
+                    </div>
+                `;
+                
+                setTimeout(() => {
+                    completePayment();
+                }, 3000);
+            }
+            // PayPal flow
+            else if (selectedPayment.querySelector('img[alt="PayPal"]')) {
+                const modalContent = document.querySelector('.modal-content');
+                modalContent.innerHTML = `
+                    <div style="text-align: center; padding: 30px;">
+                        <i class="fab fa-paypal" style="font-size: 50px; color: #003087;"></i>
+                        <h3>Redirecting to PayPal</h3>
+                        <p>You will be redirected to PayPal to complete payment</p>
+                        <div class="spinner"></div>
+                        <p>Returning to this page after payment...</p>
+                    </div>
+                `;
+                
+                setTimeout(() => {
+                    completePayment();
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

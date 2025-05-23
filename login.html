@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AI4CODE</title>
+    <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-hover: #3a56d4;
+            --text-color: #2b2d42;
+            --light-gray: #f8f9fa;
+            --border-color: #e9ecef;
+            --error-color: #ef233c;
+            --success-color: #4cc9f0;
+            --radius-md: 8px;
+            --radius-sm: 4px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(67, 97, 238, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(67, 97, 238, 0.05) 0%, transparent 20%);
+        }
+        
+        .login-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            width: 100%;
+            max-width: 450px;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .login-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .login-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        
+        .login-header p {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .auth-tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+            text-align: center;
+            flex: 1;
+        }
+        
+        .auth-tab.active {
+            color: var(--primary-color);
+        }
+        
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            border-radius: 2px 2px 0 0;
+        }
+        
+        .auth-tab:hover:not(.active) {
+            color: var(--primary-hover);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .method-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            background-color: var(--light-gray);
+            padding: 0.25rem;
+            border-radius: var(--radius-sm);
+        }
+        
+        .method-toggle button {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 500;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+        
+        .method-toggle button.active {
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            color: var(--primary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .form-group input::placeholder {
+            color: #adb5bd;
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        .otp-field small {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+        
+        .otp-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .otp-actions button {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .resend-timer {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+        
+        #forgotPassword {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        #forgotPassword:hover {
+            text-decoration: underline;
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.75rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .signup-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Success Modal */
+        .success-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .success-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: var(--success-color);
+            margin-bottom: 1.5rem;
+            animation: bounce 0.6s;
+        }
+        
+        .success-modal h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .success-modal p {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #6c757d;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 1.5rem;
+            }
+            
+            .auth-tabs {
+                flex-direction: column;
+                border-bottom: none;
+            }
+            
+            .auth-tab {
+                border-bottom: 1px solid var(--border-color);
+            }
+            
+            .auth-tab.active::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h2>Welcome back to AI4CODE</h2>
+            <p>Log in to access your projects and tools</p>
+        </div>
+        
+        <div class="auth-tabs">
+            <div class="auth-tab active" id="loginEmailTab">Email Login</div>
+            <div class="auth-tab" id="loginPhoneTab">Phone Login</div>
+        </div>
+        
+        <form id="loginForm">
+            <div class="method-toggle">
+                <button type="button" class="active" id="loginEmailBtn">Email</button>
+                <button type="button" id="loginPhoneBtn">Phone</button>
+            </div>
+            
+            <div class="form-group" id="loginEmailGroup">
+                <label for="loginEmail">Email Address</label>
+                <input type="email" id="loginEmail" placeholder="you@example.com" required>
+                <div id="emailError" class="error-message"></div>
+            </div>
+            
+            <div class="form-group" id="loginPhoneGroup" style="display: none;">
+                <label for="loginPhone">Phone Number</label>
+                <input type="tel" id="loginPhone" placeholder="+1 (123) 456-7890" required>
+                <div id="phoneError" class="error-message"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                <div id="passwordError" class="error-message"></div>
+            </div>
+            
+            <div class="form-group otp-field" id="loginOtpGroup" style="display: none;">
+                <label for="loginOtp">OTP Code</label>
+                <input type="text" id="loginOtp" placeholder="Enter 6-digit OTP" maxlength="6">
+                <div class="otp-actions">
+                    <button type="button" id="loginSendOtpBtn" class="btn">Send OTP</button>
+                    <button type="button" id="loginVerifyOtpBtn" class="btn" disabled>Verify</button>
+                </div>
+                <div id="loginOtpTimer" class="resend-timer" style="display: none;"></div>
+                <div id="loginOtpError" class="error-message"></div>
+                <small id="loginOtpMessage">We'll send an OTP to verify your phone</small>
+            </div>
+            
+            <div class="form-footer">
+                <a href="#" id="forgotPassword">Forgot Password?</a>
+                <button type="submit" class="btn" id="loginSubmit">Continue</button>
+            </div>
+        </form>
+        
+        <p class="signup-link">Don't have an account? <a href="signup.html" id="switchToSignup">Sign up</a></p>
+        
+        <!-- Success Modal -->
+        <div class="success-modal" id="successModal">
+            <div class="success-icon">✓</div>
+            <h3>Login Successful!</h3>
+            <p id="welcomeMessage">Redirecting you to your learning portal...</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize user database from localStorage
+        const userDatabase = JSON.parse(localStorage.getItem('userDatabase')) || [];
+        const otpStore = JSON.parse(localStorage.getItem('otpStore')) || {};
+        
+        // Toggle between email and phone login
+        document.getElementById('loginEmailBtn').addEventListener('click', function() {
+            document.getElementById('loginEmailGroup').style.display = 'block';
+            document.getElementById('loginPhoneGroup').style.display = 'none';
+            document.getElementById('loginOtpGroup').style.display = 'none';
+            this.classList.add('active');
+            document.getElementById('loginPhoneBtn').classList.remove('active');
+            document.getElementById('emailError').style.display = 'none';
+            document.getElementById('phoneError').style.display = 'none';
+            document.getElementById('passwordError').style.display = 'none';
+        });
+        
+        document.getElementById('loginPhoneBtn').addEventListener('click', function() {
+            document.getElementById('loginEmailGroup').style.display = 'none';
+            document.getElementById('loginPhoneGroup').style.display = 'block';
+            document.getElementById('loginOtpGroup').style.display = 'block';
+            this.classList.add('active');
+            document.getElementById('loginEmailBtn').classList.remove('active');
+            document.getElementById('emailError').style.display = 'none';
+            document.getElementById('phoneError').style.display = 'none';
+            document.getElementById('passwordError').style.display = 'none';
+        });
+        
+        // OTP Handling for login
+        const loginSendOtpBtn = document.getElementById('loginSendOtpBtn');
+        const loginVerifyOtpBtn = document.getElementById('loginVerifyOtpBtn');
+        const loginOtpTimer = document.getElementById('loginOtpTimer');
+        const loginOtpError = document.getElementById('loginOtpError');
+        const loginOtpMessage = document.getElementById('loginOtpMessage');
+        let loginOtpCountdown = 0;
+        let loginOtpInterval;
+        
+        loginSendOtpBtn.addEventListener('click', sendLoginOTP);
+        loginVerifyOtpBtn.addEventListener('click', verifyLoginOTP);
+        
+        function sendLoginOTP() {
+            const phone = document.getElementById('loginPhone').value;
+            
+            if (!phone) {
+                loginOtpError.textContent = 'Please enter your phone number first';
+                loginOtpError.style.display = 'block';
+                return;
+            }
+            
+            if (!/^\+?[0-9\s\-\(\)]{8,20}$/.test(phone)) {
+                loginOtpError.textContent = 'Please enter a valid phone number';
+                loginOtpError.style.display = 'block';
+                return;
+            }
+            
+            // Generate 6-digit OTP
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            // Store OTP with expiration (5 minutes)
+            otpStore[phone] = {
+                otp: otp,
+                expires: Date.now() + 300000, // 5 minutes
+                verified: false
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('otpStore', JSON.stringify(otpStore));
+            
+            // For testing purposes - show OTP in console and alert
+            console.log(`Login OTP for ${phone}: ${otp}`);
+            alert(`[DEMO] Login OTP sent to phone: ${otp}\n\nFor testing, use this OTP to verify.`);
+            
+            // UI Feedback
+            loginOtpError.style.display = 'none';
+            loginOtpMessage.textContent = 'OTP sent to phone';
+            loginSendOtpBtn.disabled = true;
+            loginVerifyOtpBtn.disabled = false;
+            
+            // Start countdown timer (2 minutes)
+            loginOtpCountdown = 120;
+            loginOtpTimer.style.display = 'block';
+            updateLoginOTPTimer();
+            loginOtpInterval = setInterval(updateLoginOTPTimer, 1000);
+        }
+        
+        function updateLoginOTPTimer() {
+            const minutes = Math.floor(loginOtpCountdown / 60);
+            const seconds = loginOtpCountdown % 60;
+            loginOtpTimer.textContent = `Resend OTP in ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            
+            if (loginOtpCountdown <= 0) {
+                clearInterval(loginOtpInterval);
+                loginSendOtpBtn.disabled = false;
+                loginOtpTimer.style.display = 'none';
+                loginOtpTimer.textContent = '';
+            } else {
+                loginOtpCountdown--;
+            }
+        }
+        
+        function verifyLoginOTP() {
+            const enteredOtp = document.getElementById('loginOtp').value;
+            const phone = document.getElementById('loginPhone').value;
+            
+            if (!enteredOtp || enteredOtp.length !== 6) {
+                loginOtpError.textContent = 'Please enter a 6-digit OTP';
+                loginOtpError.style.display = 'block';
+                return;
+            }
+            
+            const storedOtp = otpStore[phone];
+            
+            if (!storedOtp) {
+                loginOtpError.textContent = 'No OTP found. Please request a new one.';
+                loginOtpError.style.display = 'block';
+                return;
+            }
+            
+            if (Date.now() > storedOtp.expires) {
+                loginOtpError.textContent = 'OTP has expired. Please request a new one.';
+                loginOtpError.style.display = 'block';
+                return;
+            }
+            
+            if (enteredOtp === storedOtp.otp) {
+                loginOtpError.style.display = 'none';
+                loginOtpMessage.textContent = 'OTP verified successfully!';
+                loginVerifyOtpBtn.disabled = true;
+                loginSendOtpBtn.disabled = true;
+                
+                // Mark OTP as verified
+                otpStore[phone].verified = true;
+                localStorage.setItem('otpStore', JSON.stringify(otpStore));
+            } else {
+                loginOtpError.textContent = 'Invalid OTP. Please try again.';
+                loginOtpError.style.display = 'block';
+            }
+        }
+        
+        // Form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const isEmailMethod = document.getElementById('loginEmailBtn').classList.contains('active');
+            const email = document.getElementById('loginEmail').value;
+            const phone = document.getElementById('loginPhone').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Hide previous error messages
+            document.getElementById('emailError').style.display = 'none';
+            document.getElementById('phoneError').style.display = 'none';
+            document.getElementById('passwordError').style.display = 'none';
+            document.getElementById('loginOtpError').style.display = 'none';
+            
+            // Find user in database
+            const user = userDatabase.find(user => 
+                (isEmailMethod && user.email === email) || 
+                (!isEmailMethod && user.phone === phone)
+            );
+            
+            if (!user) {
+                // User not found
+                const errorElement = isEmailMethod ? 
+                    document.getElementById('emailError') : 
+                    document.getElementById('phoneError');
+                
+                errorElement.textContent = isEmailMethod ? 
+                    'No account found with this email. Please sign up.' : 
+                    'No account found with this phone number. Please sign up.';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            // For phone login, check if OTP is verified
+            if (!isEmailMethod && (!otpStore[phone] || !otpStore[phone].verified)) {
+                document.getElementById('loginOtpError').textContent = 'Please verify your phone with OTP first';
+                document.getElementById('loginOtpError').style.display = 'block';
+                return;
+            }
+            
+            // Check password (simple base64 encoding for demo - in real app use proper hashing)
+            if (btoa(password) !== user.password) {
+                document.getElementById('passwordError').textContent = 'Incorrect password. Please try again.';
+                document.getElementById('passwordError').style.display = 'block';
+                return;
+            }
+            
+            // Successful login - show success modal
+            const successModal = document.getElementById('successModal');
+            document.getElementById('welcomeMessage').textContent = `Welcome back, ${user.name}! Redirecting you to your learning portal...`;
+            successModal.classList.add('active');
+            
+            // Store current user session (in a real app, use proper session management)
+            sessionStorage.setItem('currentUser', JSON.stringify(user));
+            
+            // Determine redirect URL based on user's class
+            let redirectUrl;
+            switch(user.class) {
+                case '9':
+                    redirectUrl = 'learnif9ai.html';
+                    break;
+                case '10':
+                    redirectUrl = 'learnif10ai.html';
+                    break;
+                case '11':
+                    // Check if CS or AI (this would need to be stored in user data)
+                    // For demo, we'll assume AI unless specified otherwise
+                    redirectUrl = 'learnif11ai.html';
+                    break;
+                case '12':
+                    // Check if CS or AI
+                    redirectUrl = 'learnif12ai.html';
+                    break;
+                default:
+                    redirectUrl = 'dashboard.html';
+            }
+            
+            // Redirect after 2 seconds
+            setTimeout(() => {
+                window.location.href = redirectUrl;
+            }, 2000);
+        });
+        
+        // Forgot password functionality
+        document.getElementById('forgotPassword').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Please contact support to reset your password.');
+        });
+    </script>
+</body>
+</html>
